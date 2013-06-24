@@ -1,0 +1,5 @@
+{% extends "aldryn_news/base.html" %}
+
+{% block news_content %}
+    {% include "aldryn_news/snippets/_news_list.html" with news=object_list %}
+{% endblock %}

@@ -1,0 +1,9 @@
+<ul class="news-links">
+    {% for message in news %}
+        <li class="news-link">
+            <span>{{ message.publication_start|date }}</span>
+            <span class="joiner">&ndash;</span>
+            <a href="{{ message.get_absolute_url }}">{{ message.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

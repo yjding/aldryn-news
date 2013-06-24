@@ -1,0 +1,9 @@
+{% extends "aldryn_news/base.html" %}
+{% load placeholder_tags %}
+
+{% block news_content %}
+    <h1>{{ news.title }}</h1>
+    {% if news.key_visual_id %}<img src="{{ news.key_visual.url }}" alt=""/>{% endif %}
+    {{ news.lead_in|safe }}
+    {% render_placeholder news.content %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "aldryn_news/base.html" %}
+{% load i18n %}
+{% block news_content %}
+	{% if archive_date %}<h1>{% trans 'Archive' %} &ndash; {% if month %}{{ archive_date|date:'M' }} {% endif %}{{ year }}</h1>{% endif %}
+    {% include "aldryn_news/snippets/_news_list.html" with news=latest %}
+{% endblock %}
