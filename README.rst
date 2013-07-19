@@ -28,9 +28,10 @@ Add below apps to ``INSTALLED_APPS``: ::
     INSTALLED_APPS = [
         …
         
-        'aldryn_blog',
+        'aldryn_news',
         'django_select2',
         'taggit',
+        'hvad',
         
         …
     ]
