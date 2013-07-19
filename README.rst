@@ -11,9 +11,32 @@ Simple news application. It allows you to:
 Installation
 ============
 
+Aldryn Platrofm Users
+---------------------
+
 Choose a site you want to install the add-on to from the dashboard. Then go to ``Apps -> Install app`` and click ``Install`` next to ``News`` app.
 
 Redeploy the site.
+
+Manuall Installation
+--------------------
+
+Run `pip install aldryn-news`.
+
+Add below apps to `INSTALLED_APPS`: ::
+
+    INSTALLED_APPS = [
+        …
+        
+        'aldryn_blog',
+        'django_select2',
+        'taggit',
+        
+        …
+    ]
+
+Posting news
+============
 
 You can add news in the admin interface now. Search for the label ``Aldryn_News``.
 
