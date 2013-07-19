@@ -21,9 +21,9 @@ Redeploy the site.
 Manuall Installation
 --------------------
 
-Run `pip install aldryn-news`.
+Run ``pip install aldryn-news``.
 
-Add below apps to `INSTALLED_APPS`: ::
+Add below apps to ``INSTALLED_APPS``: ::
 
     INSTALLED_APPS = [
         …
