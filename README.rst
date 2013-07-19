@@ -30,9 +30,11 @@ Add below apps to ``INSTALLED_APPS``: ::
         
         'aldryn_news',
         'django_select2',
-        'taggit',
+        'djangocms_text_ckeditor',
+        'easy_thumbnails',
+        'filer',
         'hvad',
-        
+        'taggit',
         …
     ]
 
