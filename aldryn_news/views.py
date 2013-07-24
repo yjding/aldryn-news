@@ -56,6 +56,13 @@ class NewsDetailView(BaseNewsView, DetailView):
 
     template_name = 'aldryn_news/news_detail.html'
 
+    def get_object(self):
+        # django-hvad 0.3.0 doesn't support Q conditions in `get` method
+        # https://github.com/KristianOellegaard/django-hvad/issues/119
+        qs = self.get_queryset()
+        qs.filter(slug=self.kwargs['slug'])
+        return qs[0]
+
     def get(self, *args, **kwargs):
         response = super(NewsDetailView, self).get(*args, **kwargs)
         set_language_changer(self.request, self.object.get_absolute_url)
