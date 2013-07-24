@@ -3,8 +3,11 @@ from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.shortcuts import get_object_or_404
 
-from aldryn_news.models import News
+from aldryn_news.models import News, Category
+
+LATEST_ENTRIES = 10
 
 
 class LatestEntriesFeed(Feed):
@@ -16,7 +19,7 @@ class LatestEntriesFeed(Feed):
         return _('News on %(site_name)s') % {'site_name': Site.objects.get_current().name}
 
     def items(self, obj):
-        return News.published.language().order_by('-publication_start')[:10]
+        return News.published.language().order_by('-publication_start')[:LATEST_ENTRIES]
 
     def item_title(self, item):
         return item.title
@@ -31,4 +34,15 @@ class TagFeed(LatestEntriesFeed):
         return tag
 
     def items(self, obj):
-        return News.published.filter(tags__slug=obj).language()[:10]
+        # can't filter by tags on TranslatedQuerySet
+        tagged_pks = list(News.published.filter(tags__slug=obj).values_list('pk', flat=True))
+        return News.published.language().filter(pk__in=tagged_pks)[:LATEST_ENTRIES]
+
+
+class CategoryFeed(LatestEntriesFeed):
+
+    def get_object(self, request, slug):
+        return get_object_or_404(Category.objects.language(), slug=slug)
+
+    def items(self, obj):
+        return News.published.language().filter(category=obj)[:LATEST_ENTRIES]

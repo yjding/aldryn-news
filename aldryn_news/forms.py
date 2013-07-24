@@ -9,7 +9,6 @@ import taggit
 class LatestNewsForm(forms.ModelForm):
 
     class Meta:
-
         widgets = {
             'tags': django_select2.Select2MultipleWidget
         }
@@ -32,7 +31,12 @@ class NewsTagWidget(django_select2.widgets.Select2Mixin, taggit.forms.TagWidget)
 class NewsForm(TranslatableModelForm):
 
     class Meta:
-
         widgets = {
             'tags': NewsTagWidget
         }
+
+
+class CategoryForm(TranslatableModelForm):
+
+    class Meta:
+        fields = ['name', 'slug']

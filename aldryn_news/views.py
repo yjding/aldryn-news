@@ -4,8 +4,9 @@ import datetime
 from django.views.generic.dates import ArchiveIndexView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.shortcuts import get_object_or_404
 
-from aldryn_news.models import News
+from aldryn_news.models import News, Category
 
 from menus.utils import set_language_changer
 
@@ -49,7 +50,27 @@ class TaggedListView(BaseNewsView, ListView):
 
     def get_queryset(self):
         qs = super(TaggedListView, self).get_queryset()
-        return qs.filter(tags__slug=self.kwargs['tag'])
+        # can't filter by tags on TranslatedQuerySet
+        tagged_pks = list(News.objects.filter(tags__slug=self.kwargs['tag']).values_list('pk', flat=True))
+        return qs.filter(pk__in=tagged_pks)
+
+
+class CategoryListView(BaseNewsView, ListView):
+
+    template_name = 'aldryn_news/news_list.html'
+
+    def get(self, *args, **kwargs):
+        self.object = self.get_object()
+        response = super(CategoryListView, self).get(*args, **kwargs)
+        set_language_changer(self.request, self.object.get_absolute_url)
+        return response
+
+    def get_object(self):
+        return get_object_or_404(Category.objects.language(), slug=self.kwargs['slug'])
+
+    def get_queryset(self):
+        qs = super(CategoryListView, self).get_queryset()
+        return qs.filter(category=self.object)
 
 
 class NewsDetailView(BaseNewsView, DetailView):

@@ -6,13 +6,52 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
-
+from cms.utils.i18n import force_language, get_current_language
 from cms.models.fields import PlaceholderField
 from cms.models.pluginmodel import CMSPlugin
 from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
 from taggit.managers import TaggableManager
 from hvad.models import TranslatableModel, TranslatedFields, TranslationManager
+from hvad.utils import get_translation
+
+
+def get_slug_in_language(record, language):
+    if language == record.language_code:  # possibly no need to hit db, try cache
+        return record.lazy_translation_getter('slug')
+    else:  # hit db
+        translation = get_translation(record, language_code=language)
+        return translation.slug
+
+
+class Category(TranslatableModel):
+
+    translations = TranslatedFields(
+        name=models.CharField(_('Name'), max_length=255),
+        slug=models.SlugField(_('Slug'), max_length=255, blank=True,
+                              help_text=_('Auto-generated. Used in the URL. If changed, the URL will change. '
+                                          'Clean it to have it re-created.')),
+        meta={'unique_together': [['slug', 'language_code']]}
+    )
+
+    ordering = models.IntegerField(_('Ordering'), default=0)
+
+    class Meta:
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
+        ordering = ['ordering']
+
+    def __unicode__(self):
+        return self.lazy_translation_getter('name', str(self.pk))
+
+    def get_absolute_url(self, language=None):
+        language = language or get_current_language()
+        slug = get_slug_in_language(self, language)
+        if not slug:  # category not translated in given language
+            return reverse('latest-news')
+        with force_language(language):
+            kwargs = {'slug': slug}
+            return reverse('news-category', kwargs=kwargs)
 
 
 class RelatedManager(TranslationManager):
@@ -48,7 +87,7 @@ class News(TranslatableModel):
     publication_start = models.DateTimeField(_('Published Since'), default=datetime.datetime.now,
                                              help_text=_('Used in the URL. If changed, the URL will change.'))
     publication_end = models.DateTimeField(_('Published Until'), null=True, blank=True)
-
+    category = models.ForeignKey(Category, verbose_name=_('Category'), blank=True, null=True)
     objects = RelatedManager()
     published = PublishedManager()
     tags = TaggableManager(blank=True)
@@ -62,15 +101,16 @@ class News(TranslatableModel):
         return self.lazy_translation_getter('title', str(self.pk))
 
     def get_absolute_url(self, language=None):
-        if language:
-            translation = self.__class__.objects.language(language_code=language).get(pk=self.pk)
-        else:
-            translation = self
-        kwargs = {'year': self.publication_start.year,
-                  'month': self.publication_start.month,
-                  'day': self.publication_start.day,
-                  'slug': translation.lazy_translation_getter('slug', str(self.pk))}
-        return reverse('news-detail', kwargs=kwargs)
+        language = language or get_current_language()
+        slug = get_slug_in_language(self, language)
+        if not slug:  # news not translated in given language
+            return reverse('latest-news')
+        with force_language(language):
+            kwargs = {'year': self.publication_start.year,
+                      'month': self.publication_start.month,
+                      'day': self.publication_start.day,
+                      'slug': slug}
+            return reverse('news-detail', kwargs=kwargs)
 
 
 class LatestNewsPlugin(CMSPlugin):
