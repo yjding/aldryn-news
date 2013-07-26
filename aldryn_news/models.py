@@ -77,10 +77,12 @@ class News(TranslatableModel):
 
     translations = TranslatedFields(
         title=models.CharField(_('Title'), max_length=255),
-        slug=models.CharField(_('Slug'), max_length=255, unique=True, blank=True,
-                              help_text=_('Used in the URL. If changed, the URL will change. ')),
+        slug=models.CharField(_('Slug'), max_length=255, blank=True,
+                              help_text=_('Auto-generated. Used in the URL. If changed, the URL will change. '
+                                          'Clean it to have it re-created.')),
         lead_in=HTMLField(_('Lead-in'),
-                          help_text=_('Will be displayed in lists, and at the start of the detail page'))
+                          help_text=_('Will be displayed in lists, and at the start of the detail page')),
+        meta={'unique_together': [['slug', 'language_code']]}
     )
     key_visual = FilerImageField(verbose_name=_('Key Visual'), blank=True, null=True)
     content = PlaceholderField('blog_post_content')
