@@ -9,6 +9,7 @@ REQUIREMENTS = [
     'django-taggit',
     'djangocms-text-ckeditor',
     'translitcodec',
+    'Unidecode',
 ]
 
 CLASSIFIERS = [
