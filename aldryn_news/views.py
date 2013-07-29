@@ -50,8 +50,9 @@ class TaggedListView(BaseNewsView, ListView):
 
     def get_queryset(self):
         qs = super(TaggedListView, self).get_queryset()
-        # can't filter by tags on TranslatedQuerySet
-        tagged_pks = list(News.objects.filter(tags__slug=self.kwargs['tag']).values_list('pk', flat=True))
+        # can't filter by tags (m2m) on TranslatedQuerySet
+        tagged = News.objects.filter(tags__slug=self.kwargs['tag'])
+        tagged_pks = tagged.values_list('pk', flat=True)
         return qs.filter(pk__in=tagged_pks)
 
 
