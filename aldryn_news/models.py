@@ -20,8 +20,12 @@ def get_slug_in_language(record, language):
     if language == record.language_code:  # possibly no need to hit db, try cache
         return record.lazy_translation_getter('slug')
     else:  # hit db
-        translation = get_translation(record, language_code=language)
-        return translation.slug
+        try:
+            translation = get_translation(record, language_code=language)
+        except models.ObjectDoesNotExist:
+            return None
+        else:
+            return translation.slug
 
 
 class Category(TranslatableModel):
@@ -47,9 +51,9 @@ class Category(TranslatableModel):
     def get_absolute_url(self, language=None):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
-        if not slug:  # category not translated in given language
-            return reverse('latest-news')
         with force_language(language):
+            if not slug:  # category not translated in given language
+                return reverse('latest-news')
             kwargs = {'slug': slug}
             return reverse('news-category', kwargs=kwargs)
 
@@ -105,9 +109,12 @@ class News(TranslatableModel):
     def get_absolute_url(self, language=None):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
-        if not slug:  # news not translated in given language
-            return reverse('latest-news')
         with force_language(language):
+            if not slug:  # news not translated in given language
+                if self.category:
+                    return self.category.get_absolute_url(language=language)
+                else:
+                    return reverse('latest-news')
             kwargs = {'year': self.publication_start.year,
                       'month': self.publication_start.month,
                       'day': self.publication_start.day,
