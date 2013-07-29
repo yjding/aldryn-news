@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save, post_delete
 
 from aldryn_news.models import Category
 
@@ -25,3 +26,10 @@ class NewsCategoryMenu(CMSAttachMenu):
         return nodes
 
 menu_pool.register_menu(NewsCategoryMenu)
+
+
+def clear_menu_cache(**kwargs):
+    menu_pool.clear(all=True)
+
+post_save.connect(clear_menu_cache, sender=Category)
+post_delete.connect(clear_menu_cache, sender=Category)
