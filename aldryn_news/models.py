@@ -17,6 +17,8 @@ from hvad.utils import get_translation
 
 
 def get_slug_in_language(record, language):
+    if not record:
+        return None
     if language == record.language_code:  # possibly no need to hit db, try cache
         return record.lazy_translation_getter('slug')
     else:  # hit db
@@ -33,8 +35,8 @@ class Category(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(_('Name'), max_length=255),
         slug=models.SlugField(_('Slug'), max_length=255, blank=True,
-                              help_text=_('Auto-generated. Used in the URL. If changed, the URL will change. '
-                                          'Clean it to have it re-created.')),
+                              help_text=_('Auto-generated. Clean it to have it re-created. '
+                                          'WARNING! Used in the URL. If changed, the URL will change. ')),
         meta={'unique_together': [['slug', 'language_code']]}
     )
 
@@ -54,7 +56,7 @@ class Category(TranslatableModel):
         with force_language(language):
             if not slug:  # category not translated in given language
                 return reverse('latest-news')
-            kwargs = {'slug': slug}
+            kwargs = {'category_slug': slug}
             return reverse('news-category', kwargs=kwargs)
 
 
@@ -82,8 +84,8 @@ class News(TranslatableModel):
     translations = TranslatedFields(
         title=models.CharField(_('Title'), max_length=255),
         slug=models.CharField(_('Slug'), max_length=255, blank=True,
-                              help_text=_('Auto-generated. Used in the URL. If changed, the URL will change. '
-                                          'Clean it to have it re-created.')),
+                              help_text=_('Auto-generated. Clean it to have it re-created. '
+                                          'WARNING! Used in the URL. If changed, the URL will change. ')),
         lead_in=HTMLField(_('Lead-in'),
                           help_text=_('Will be displayed in lists, and at the start of the detail page')),
         meta={'unique_together': [['slug', 'language_code']]}
@@ -93,7 +95,8 @@ class News(TranslatableModel):
     publication_start = models.DateTimeField(_('Published Since'), default=datetime.datetime.now,
                                              help_text=_('Used in the URL. If changed, the URL will change.'))
     publication_end = models.DateTimeField(_('Published Until'), null=True, blank=True)
-    category = models.ForeignKey(Category, verbose_name=_('Category'), blank=True, null=True)
+    category = models.ForeignKey(Category, verbose_name=_('Category'), blank=True, null=True,
+                                 help_text=_('WARNING! Used in the URL. If changed, the URL will change.'))
     objects = RelatedManager()
     published = PublishedManager()
     tags = TaggableManager(blank=True)
@@ -119,6 +122,9 @@ class News(TranslatableModel):
                       'month': self.publication_start.month,
                       'day': self.publication_start.day,
                       'slug': slug}
+            category_slug = get_slug_in_language(self.category, language)
+            if category_slug:
+                kwargs['category_slug'] = category_slug
             return reverse('news-detail', kwargs=kwargs)
 
 

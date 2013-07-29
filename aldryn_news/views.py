@@ -67,7 +67,7 @@ class CategoryListView(BaseNewsView, ListView):
         return response
 
     def get_object(self):
-        return get_object_or_404(Category.objects.language(), slug=self.kwargs['slug'])
+        return get_object_or_404(Category.objects.language(), slug=self.kwargs['category_slug'])
 
     def get_queryset(self):
         qs = super(CategoryListView, self).get_queryset()
