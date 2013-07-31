@@ -26,7 +26,7 @@ class ArchiveView(BaseNewsView, ArchiveIndexView):
     date_field = 'publication_start'
     allow_empty = True
     allow_future = True
-    template_name = 'aldryn_news/news_archive.html'
+    template_name = 'aldryn_news/news_list.html'
 
     def get_queryset(self):
         qs = super(ArchiveView, self).get_queryset()

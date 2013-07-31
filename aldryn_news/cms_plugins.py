@@ -11,7 +11,7 @@ from aldryn_news.forms import LatestNewsForm
 class LatestNewsPlugin(CMSPluginBase):
 
     module = 'News'
-    render_template = 'aldryn_news/latest_entries.html'
+    render_template = 'aldryn_news/plugins/latest_entries.html'
     name = _('Latest News Entries')
     model = models.LatestNewsPlugin
     form = LatestNewsForm
