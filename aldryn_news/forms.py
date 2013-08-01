@@ -10,7 +10,7 @@ import taggit
 from unidecode import unidecode
 
 
-class LatestNewsForm(forms.ModelForm):
+class MultipleTagForm(forms.ModelForm):
 
     class Meta:
         widgets = {
