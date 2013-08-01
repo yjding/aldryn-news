@@ -27,5 +27,8 @@ class TagsPlugin(NewsPluginBase):
 
     render_template = 'aldryn_news/plugins/tags.html'
     name = _('Tags')
-    model = models.TagsPlugin
     form = MultipleTagForm
+
+    def render(self, context, instance, placeholder):
+        context['tags'] = []
+        return context

@@ -145,14 +145,3 @@ class LatestNewsPlugin(CMSPlugin):
         if tags:
             news = news.filter(tags__in=tags)
         return news[:self.latest_entries]
-
-
-class TagsPlugin(CMSPlugin):
-
-    tags = models.ManyToManyField('taggit.Tag', blank=True, help_text=_('Show only the news tagged with chosen tags.'))
-
-    def copy_relations(self, oldinstance):
-        self.tags = oldinstance.tags.all()
-
-    def get_tags(self):
-        return self.tags.all()
