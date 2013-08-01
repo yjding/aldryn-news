@@ -11,6 +11,7 @@ from cms.models.fields import PlaceholderField
 from cms.models.pluginmodel import CMSPlugin
 from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
+from taggit.models import TaggedItem, Tag
 from taggit.managers import TaggableManager
 from hvad.models import TranslatableModel, TranslatedFields, TranslationManager
 from hvad.utils import get_translation
@@ -63,16 +64,39 @@ class Category(TranslatableModel):
 class RelatedManager(TranslationManager):
 
     def using_translations(self):
+        # not overriding get_queryset, as hvad doesn't use that
         qs = super(RelatedManager, self).using_translations()
         qs = qs.select_related('key_visual')
         # bug in hvad - Meta ordering isn't preserved
         qs = qs.order_by('-publication_start')
         return qs
 
+    def get_tags(self, language):
+        """Returns tags used to tag current language news and its count
+        ordered by count."""
+
+        # get tagged news
+        news = self.language(language).distinct()
+        kwargs = TaggedItem.bulk_lookup_kwargs(news)
+
+        # aggregate and sort
+        counted_tags = dict(TaggedItem.objects
+                                      .filter(**kwargs)
+                                      .values('tag')
+                                      .annotate(count=models.Count('tag'))
+                                      .values_list('tag', 'count'))
+
+        # and finally get the results
+        tags = Tag.objects.filter(pk__in=counted_tags.keys())
+        for tag in tags:
+            tag.count = counted_tags[tag.pk]
+        return sorted(tags, key=lambda x: -x.count)
+
 
 class PublishedManager(RelatedManager):
 
     def using_translations(self):
+        # not overriding get_queryset, as hvad doesn't use that
         qs = super(PublishedManager, self).using_translations()
         qs = qs.filter(publication_start__lte=now())
         qs = qs.filter(models.Q(publication_end__isnull=True) | models.Q(publication_end__gte=now()))

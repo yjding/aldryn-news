@@ -3,7 +3,7 @@
 <h3>{% trans 'News tags' %}</h3>
 <ul class="aldryn-news-tag-list">
 	{% for tag in tags %}
-		<li><a href="{% url tagged-news tag=tag.name %}">{{ tag }}</a></li>
+		<li><a href="{% url tagged-news tag=tag.slug %}">{{ tag.name }} ({{ tag.count }})</a></li>
 	{% empty %}
 		<li>{% trans 'There are no news tags.' %}</li> 
 	{% endfor %}

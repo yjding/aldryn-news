@@ -30,5 +30,5 @@ class TagsPlugin(NewsPluginBase):
     form = MultipleTagForm
 
     def render(self, context, instance, placeholder):
-        context['tags'] = []
+        context['tags'] = models.News.published.get_tags(language=instance.language)
         return context
