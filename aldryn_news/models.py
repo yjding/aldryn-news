@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+from collections import Counter
 
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -93,9 +94,15 @@ class RelatedManager(TranslationManager):
 
     def get_months(self, language):
         """Get months with aggregatet count (how much news is in the month). Results are ordered by date."""
+        # done via naive way as django's having tough time while aggregating on date fields
         news = self.language(language)
-        dates = news.dates('publication_start', 'month')
-        return dates.order_by('publication_start')
+        dates = news.values_list('publication_start', flat=True)
+        dates = [(x.year, x.month) for x in dates]
+        date_counter = Counter(dates)
+        dates = set(dates)
+        dates = sorted(dates, reverse=True)
+        return [{'date': datetime.date(year=year, month=month, day=1),
+                 'count': date_counter[year, month]} for year, month in dates]
 
 
 class PublishedManager(RelatedManager):
