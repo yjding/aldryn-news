@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<h3>{% trans 'Archive' %}</h3>
+<ul class="aldryn-news-archive-year-list">
+	{% regroup dates by year as years %}
+	{% for year in years %}
+		<li>
+			<a href="{% url archive-year year=year.grouper %}">{{ year.grouper }}</a>
+			<ul class="aldryn-news-archive-month-list">
+				{% for month in year.list %}
+					<li><a href="{% url archive-month year=year.grouper month=month.date|date:"m" %}">{{ month.date|date:"M" }} (month.count)</a></li>
+				{% endfor %}
+			</ul>
+		</li>
+	{% endfor %}
+</ul>

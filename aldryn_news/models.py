@@ -72,8 +72,7 @@ class RelatedManager(TranslationManager):
         return qs
 
     def get_tags(self, language):
-        """Returns tags used to tag current language news and its count
-        ordered by count."""
+        """Returns tags used to tag news and its count. Results are ordered by count."""
 
         # get tagged news
         news = self.language(language).distinct()
@@ -91,6 +90,12 @@ class RelatedManager(TranslationManager):
         for tag in tags:
             tag.count = counted_tags[tag.pk]
         return sorted(tags, key=lambda x: -x.count)
+
+    def get_months(self, language):
+        """Get months with aggregatet count (how much news is in the month). Results are ordered by date."""
+        news = self.language(language)
+        dates = news.dates('publication_start', 'month')
+        return dates.order_by('publication_start')
 
 
 class PublishedManager(RelatedManager):
