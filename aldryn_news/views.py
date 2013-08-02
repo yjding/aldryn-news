@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
 
+from aldryn_news import request_news_identifier
 from aldryn_news.models import News, Category
 
 from menus.utils import set_language_changer
@@ -84,7 +85,9 @@ class NewsDetailView(BaseNewsView, DetailView):
         # https://github.com/KristianOellegaard/django-hvad/issues/119
         qs = self.get_queryset()
         qs.filter(slug=self.kwargs['slug'])
-        return qs[0]
+        news = qs[0]
+        setattr(self.request, request_news_identifier, news)
+        return news
 
     def get(self, *args, **kwargs):
         response = super(NewsDetailView, self).get(*args, **kwargs)
