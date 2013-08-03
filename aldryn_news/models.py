@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+from collections import Counter
 
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -72,8 +73,7 @@ class RelatedManager(TranslationManager):
         return qs
 
     def get_tags(self, language):
-        """Returns tags used to tag current language news and its count
-        ordered by count."""
+        """Returns tags used to tag news and its count. Results are ordered by count."""
 
         # get tagged news
         news = self.language(language).distinct()
@@ -91,6 +91,18 @@ class RelatedManager(TranslationManager):
         for tag in tags:
             tag.count = counted_tags[tag.pk]
         return sorted(tags, key=lambda x: -x.count)
+
+    def get_months(self, language):
+        """Get months with aggregatet count (how much news is in the month). Results are ordered by date."""
+        # done via naive way as django's having tough time while aggregating on date fields
+        news = self.language(language)
+        dates = news.values_list('publication_start', flat=True)
+        dates = [(x.year, x.month) for x in dates]
+        date_counter = Counter(dates)
+        dates = set(dates)
+        dates = sorted(dates, reverse=True)
+        return [{'date': datetime.date(year=year, month=month, day=1),
+                 'count': date_counter[year, month]} for year, month in dates]
 
 
 class PublishedManager(RelatedManager):

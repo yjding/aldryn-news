@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import redirect
 
+
 def redirect_to_viewname(request, viewname, keys, **kwargs):
-    in_keys = lambda (x, y): x in keys
-    kwargs = dict(filter(in_keys, kwargs.iteritems()))
+    kwargs = dict((x, y) for x, y in kwargs.iteritems() if x in keys)
     return redirect(viewname, **kwargs)

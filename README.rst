@@ -27,14 +27,13 @@ Add below apps to ``INSTALLED_APPS``: ::
 
     INSTALLED_APPS = [
         …
-        
+        'taggit',
         'aldryn_news',
         'django_select2',
         'djangocms_text_ckeditor',
         'easy_thumbnails',
         'filer',
         'hvad',
-        'taggit',
         …
     ]
 

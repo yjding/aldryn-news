@@ -32,3 +32,14 @@ class TagsPlugin(NewsPluginBase):
     def render(self, context, instance, placeholder):
         context['tags'] = models.News.published.get_tags(language=instance.language)
         return context
+
+
+@plugin_pool.register_plugin
+class ArchivePlugin(NewsPluginBase):
+
+    render_template = 'aldryn_news/plugins/archive.html'
+    name = _('Archive')
+
+    def render(self, context, instance, placeholder):
+        context['dates'] = models.News.published.get_months(language=instance.language)
+        return context
