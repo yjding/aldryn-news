@@ -1,10 +1,11 @@
 {% load i18n %}
 
-<h3>{% trans 'News tags' %}</h3>
-<ul class="aldryn-news-tag-list">
-	{% for tag in tags %}
-		<li><a href="{% url tagged-news tag=tag.slug %}">{{ tag.name }} ({{ tag.count }})</a></li>
-	{% empty %}
-		<li>{% trans 'There are no news tags.' %}</li> 
-	{% endfor %}
-</ul>
+<div class="plugin-news">
+	<ul class="news-tags">
+		{% for tag in tags %}
+		<li><a href="{% url tagged-news tag=tag.slug %}" class="news-tag-1">{{ tag.name }} ({{ tag.count }})</a></li>
+		{% empty %}
+		<li>{% trans "There are no news tags." %}</li>
+		{% endfor %}
+	</ul>
+</div>

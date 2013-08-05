@@ -4,7 +4,7 @@
 {% block content_news %}
 <div class="news-detail">
 	{% block news_title %}<h2>{{ news.title }}</h2>{% endblock %}
-	{% if news.key_visual_id %}<p class="mews-visual"><img src="{% thumbnail news.key_visual 940x200 crop %}" alt="" /></p>{% endif %}
+	{% if news.key_visual_id %}<p class="mews-visual"><img src="{% thumbnail news.key_visual 700x200 crop %}" alt="" /></p>{% endif %}
 	<div class="news-lead">{{ news.lead_in|safe }}</div>
 	<div class="news-content">{% render_placeholder news.content %}</div>
 </div>
