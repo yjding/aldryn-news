@@ -84,7 +84,7 @@ class NewsDetailView(BaseNewsView, DetailView):
         # django-hvad 0.3.0 doesn't support Q conditions in `get` method
         # https://github.com/KristianOellegaard/django-hvad/issues/119
         qs = self.get_queryset()
-        qs.filter(slug=self.kwargs['slug'])
+        qs = qs.filter(slug=self.kwargs['slug'])
         news = qs[0]
         setattr(self.request, request_news_identifier, news)
         return news

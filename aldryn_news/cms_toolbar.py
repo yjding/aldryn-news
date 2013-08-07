@@ -16,12 +16,12 @@ class NewsToolbar(CMSToolbar):
             perm = 'aldryn_news.%(action)s_%(model)s' % {'action': action, 'model': model}
             return self.request.user.has_perm(perm)
 
-        if can('add', 'news') or can('change', 'news'):
+        if self.is_current_app and (can('add', 'news') or can('change', 'news')):
             menu = self.toolbar.get_or_create_menu('news-app', _('News'))
             if can('add', 'news'):
                 menu.add_modal_item(_('Add News'), reverse('admin:aldryn_news_news_add') + '?_popup')
 
-            job_offer = getattr(self.request, request_news_identifier, None)
-            if job_offer and can('change', 'news'):
-                url = reverse('admin:aldryn_news_news_change', args=(job_offer.pk,)) + '?_popup'
+            news = getattr(self.request, request_news_identifier, None)
+            if news and can('change', 'news'):
+                url = reverse('admin:aldryn_news_news_change', args=(news.pk,)) + '?_popup'
                 menu.add_modal_item(_('Edit News'), url, active=True)
