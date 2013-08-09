@@ -179,5 +179,6 @@ class LatestNewsPlugin(CMSPlugin):
         news = News.published.language(self.language)
         tags = list(self.tags.all())
         if tags:
-            news = news.filter(tags__in=tags)
+            tagged_news = News.objects.filter(tags__in=tags)
+            news = news.filter(id__in=tagged_news)
         return news[:self.latest_entries]
