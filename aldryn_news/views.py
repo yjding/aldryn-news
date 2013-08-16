@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
+from cms.utils.i18n import get_language_objects
+from django.contrib import messages
+from django.contrib.sites.models import Site
+from django.utils.translation import ugettext_lazy as _
 
 from django.views.generic.dates import ArchiveIndexView
 from django.views.generic.detail import DetailView
@@ -43,6 +47,15 @@ class ArchiveView(BaseNewsView, ArchiveIndexView):
         kwargs['year'] = int(self.kwargs.get('year')) if 'year' in self.kwargs else None
         if kwargs['year']:
             kwargs['archive_date'] = datetime.date(kwargs['year'], kwargs['month'] or 1, 1)
+
+        site = Site.objects.get_current()
+        cms_languages = [lang['code'] for lang in get_language_objects(site.pk)]
+        page_languages = self.request.current_page.get_languages()
+        missing_lang = set(cms_languages) - set(page_languages)
+        if missing_lang:
+            error = _("There is no page translation for the language: %(languages)s"
+                      % {'languages': ', '.join(list(missing_lang))})
+            messages.error(self.request, error)
         return super(ArchiveView, self).get_context_data(**kwargs)
 
 
