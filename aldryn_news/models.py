@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
 from collections import Counter
+from django.core.exceptions import ImproperlyConfigured
 
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
@@ -32,6 +33,16 @@ def get_slug_in_language(record, language):
             return translation.slug
 
 
+def get_page_url(name, language):
+    try:
+        url = reverse(name)
+    except NoReverseMatch:
+        error = _("There is no page translation for the language: %(lang)s"
+                  % {'lang': language})
+        raise ImproperlyConfigured(error)
+    return url
+
+
 class Category(TranslatableModel):
 
     translations = TranslatedFields(
@@ -57,7 +68,7 @@ class Category(TranslatableModel):
         slug = get_slug_in_language(self, language)
         with force_language(language):
             if not slug:  # category not translated in given language
-                return reverse('latest-news')
+                return get_page_url('latest-news', language)
             kwargs = {'category_slug': slug}
             return reverse('news-category', kwargs=kwargs)
 
@@ -153,7 +164,7 @@ class News(TranslatableModel):
                 if self.category:
                     return self.category.get_absolute_url(language=language)
                 else:
-                    return reverse('latest-news')
+                    return get_page_url('latest-news', language)
             kwargs = {'year': self.publication_start.year,
                       'month': self.publication_start.month,
                       'day': self.publication_start.day,
