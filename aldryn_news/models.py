@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
 from collections import Counter
+from django.contrib.contenttypes.models import ContentType
+from django.template.defaultfilters import slugify
 from django.core.exceptions import ImproperlyConfigured
 
 from django.core.urlresolvers import reverse, NoReverseMatch
@@ -13,10 +15,12 @@ from cms.models.fields import PlaceholderField
 from cms.models.pluginmodel import CMSPlugin
 from djangocms_text_ckeditor.fields import HTMLField
 from filer.fields.image import FilerImageField
-from taggit.models import TaggedItem, Tag
+from taggit.models import (GenericTaggedItemBase as TaggitGenericTaggedItemBase,
+                           ItemBase as TaggitItemBase)
 from taggit.managers import TaggableManager
 from hvad.models import TranslatableModel, TranslatedFields, TranslationManager
 from hvad.utils import get_translation
+from unidecode import unidecode
 
 
 def get_slug_in_language(record, language):
@@ -73,6 +77,61 @@ class Category(TranslatableModel):
             return reverse('news-category', kwargs=kwargs)
 
 
+class TagManager(TranslationManager):
+
+    def get_query_set(self):
+        return self.language()
+
+
+class Tag(TranslatableModel):
+
+    translations = TranslatedFields(
+        name=models.CharField(_('Name'), max_length=255),
+        slug=models.SlugField(verbose_name=_('Slug'), max_length=100),
+        meta={'unique_together': [['slug', 'language_code']]}
+    )
+
+    objects = TagManager()
+
+    def __unicode__(self):
+        return self.name
+
+    @classmethod
+    def save_translations(cls, instance, **kwargs):
+        opts = cls._meta
+        if hasattr(instance, opts.translations_cache):
+            trans = getattr(instance, opts.translations_cache)
+            if not trans.master_id:
+                trans.master = instance
+                trans.slug = slugify(unidecode(trans.name))
+            trans.save()
+
+
+class TaggedItemBase(TaggitItemBase):
+
+    tag = models.ForeignKey(Tag, related_name="%(app_label)s_%(class)s_items")
+
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def tags_for(cls, model, instance=None):
+        if instance is not None:
+            return cls.tag_model().objects.filter(**{
+                '%s__content_object' % cls.tag_relname(): instance
+            })
+        return cls.tag_model().objects.filter(**{
+            '%s__content_object__isnull' % cls.tag_relname(): False
+        }).distinct()
+
+
+class TaggedItem(TaggitGenericTaggedItemBase, TaggedItemBase):
+
+    class Meta:
+        verbose_name = _("Tagged Item")
+        verbose_name_plural = _("Tagged Items")
+
+
 class RelatedManager(TranslationManager):
 
     def using_translations(self):
@@ -88,7 +147,10 @@ class RelatedManager(TranslationManager):
 
         # get tagged news
         news = self.language(language).distinct()
-        kwargs = TaggedItem.bulk_lookup_kwargs(news)
+        kwargs = {
+            "object_id__in": [instance.pk for instance in news],
+            "content_type": ContentType.objects.get_for_model(news[0])
+        }
 
         # aggregate and sort
         counted_tags = dict(TaggedItem.objects
@@ -146,7 +208,7 @@ class News(TranslatableModel):
                                  help_text=_('WARNING! Used in the URL. If changed, the URL will change.'))
     objects = RelatedManager()
     published = PublishedManager()
-    tags = TaggableManager(blank=True)
+    tags = TaggableManager(blank=True, through=TaggedItem)
 
     class Meta:
         verbose_name = _('News')
