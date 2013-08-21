@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 from aldryn_news.forms import NewsForm, CategoryForm
-from aldryn_news.models import News, Category
+from aldryn_news.models import News, Category, Tag, TaggedItem
 
 import cms
 from cms.admin.placeholderadmin import PlaceholderAdmin
@@ -47,3 +47,22 @@ class CategoryAdmin(TranslatableAdmin):
         return fieldsets
 
 admin.site.register(Category, CategoryAdmin)
+
+
+class TaggedItemInline(admin.StackedInline):
+    model = TaggedItem
+
+
+class TagAdmin(TranslatableAdmin):
+
+    list_display = ['__unicode__', 'all_translations']
+    inlines = [TaggedItemInline]
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = [
+            (None, {'fields': ['name', 'slug']}),
+        ]
+        return fieldsets
+
+
+admin.site.register(Tag, TagAdmin)

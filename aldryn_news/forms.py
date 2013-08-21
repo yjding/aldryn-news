@@ -9,6 +9,8 @@ from hvad.forms import TranslatableModelForm
 import taggit
 from unidecode import unidecode
 
+from .models import Tag
+
 
 class MultipleTagForm(forms.ModelForm):
 
@@ -22,7 +24,7 @@ class NewsTagWidget(django_select2.widgets.Select2Mixin, taggit.forms.TagWidget)
 
     def __init__(self, *args, **kwargs):
         options = kwargs.get('select2_options', {})
-        options['tags'] = list(taggit.models.Tag.objects.values_list('name', flat=True))
+        options['tags'] = list(Tag.objects.values_list('name', flat=True))
         options['tokenSeparators'] = [' ', ',']
         kwargs['select2_options'] = options
         super(NewsTagWidget, self).__init__(*args, **kwargs)

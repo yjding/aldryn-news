@@ -11,7 +11,7 @@ from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
 
 from aldryn_news import request_news_identifier
-from aldryn_news.models import News, Category
+from aldryn_news.models import News, Category, Tag
 
 from menus.utils import set_language_changer
 
@@ -66,7 +66,8 @@ class TaggedListView(BaseNewsView, ListView):
     def get_queryset(self):
         qs = super(TaggedListView, self).get_queryset()
         # can't filter by tags (m2m) on TranslatedQuerySet
-        tagged = News.objects.filter(tags__slug=self.kwargs['tag'])
+        tags = Tag.objects.filter(slug=self.kwargs['tag'])
+        tagged = News.objects.filter(tags__in=tags)
         tagged_pks = list(tagged.values_list('pk', flat=True))
         return qs.filter(pk__in=tagged_pks)
 
