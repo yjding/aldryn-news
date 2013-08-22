@@ -1,0 +1,11 @@
+{% load i18n thumbnail %}
+
+<ul class="news-items">
+	{% for news_item in news %}
+	<li>
+        <a href="{{ news_item.get_absolute_url }}">{{ news_item.title }}</a>
+	</li>
+	{% empty %}
+	<li><p class="news-empty">{% trans "No entry found." %}</p></li>
+	{% endfor %}
+</ul>

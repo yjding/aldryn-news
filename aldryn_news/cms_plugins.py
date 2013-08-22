@@ -21,6 +21,12 @@ class LatestNewsPlugin(NewsPluginBase):
     model = models.LatestNewsPlugin
     form = MultipleTagForm
 
+    def render(self, context, instance, placeholder):
+        context['FULL'] = models.LatestNewsPlugin.FULL
+        context['SIMPLE'] = models.LatestNewsPlugin.SIMPLE
+        context['instance'] = instance
+        return context
+
 
 @plugin_pool.register_plugin
 class TagsPlugin(NewsPluginBase):
