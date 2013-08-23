@@ -19,9 +19,9 @@ class NewsToolbar(CMSToolbar):
         if self.is_current_app and (can('add', 'news') or can('change', 'news')):
             menu = self.toolbar.get_or_create_menu('news-app', _('News'))
             if can('add', 'news'):
-                menu.add_modal_item(_('Add News'), reverse('admin:aldryn_news_news_add') + '?_popup')
+                menu.add_modal_item(_('Add News'), reverse('admin:aldryn_news_news_add'))
 
             news = getattr(self.request, request_news_identifier, None)
             if news and can('change', 'news'):
-                url = reverse('admin:aldryn_news_news_change', args=(news.pk,)) + '?_popup'
+                url = reverse('admin:aldryn_news_news_change', args=(news.pk,))
                 menu.add_modal_item(_('Edit News'), url, active=True)
