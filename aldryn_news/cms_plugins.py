@@ -5,7 +5,7 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
 from aldryn_news import models
-from aldryn_news.forms import MultipleTagForm
+from aldryn_news.forms import MultipleTagForm, LinksForm
 
 
 class NewsPluginBase(CMSPluginBase):
@@ -48,4 +48,18 @@ class ArchivePlugin(NewsPluginBase):
 
     def render(self, context, instance, placeholder):
         context['dates'] = models.News.published.get_months(language=instance.language)
+        return context
+
+
+@plugin_pool.register_plugin
+class NewsLinksPlugin(NewsPluginBase):
+
+    render_template = 'aldryn_news/plugins/news_links.html'
+    name = _("News links")
+    model = models.NewsLinksPlugin
+    form = LinksForm
+    filter_horizontal = ['news']
+
+    def render(self, context, instance, placeholder):
+        context['instance'] = instance
         return context

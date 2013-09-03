@@ -264,3 +264,14 @@ class LatestNewsPlugin(CMSPlugin):
             tagged_news = News.objects.filter(tags__in=tags)
             news = news.filter(id__in=tagged_news)
         return news[:self.latest_entries]
+
+
+class NewsLinksPlugin(CMSPlugin):
+
+    news = models.ManyToManyField(News, verbose_name=_("News"))
+
+    def copy_relations(self, oldinstance):
+        self.news = oldinstance.news.all()
+
+    def get_news(self):
+        return self.news.all()

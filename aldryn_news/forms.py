@@ -9,7 +9,7 @@ from hvad.forms import TranslatableModelForm
 import taggit
 from unidecode import unidecode
 
-from .models import Tag
+from .models import Tag, News
 
 
 class MultipleTagForm(forms.ModelForm):
@@ -110,3 +110,13 @@ class NewsForm(AutoSlugForm):
         widgets = {
             'tags': NewsTagWidget
         }
+
+
+class LinksForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(LinksForm, self).__init__(*args, **kwargs)
+        self.fields['news'].queryset = News.objects.language()
+
+    class Meta:
+        model = News
