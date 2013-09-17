@@ -78,8 +78,7 @@ msgstr "Slug"
 msgid ""
 "Auto-generated. Clean it to have it re-created. WARNING! Used in the URL. If "
 "changed, the URL will change. "
-msgstr "Automatisch generiert. Bereinigen und es wird neu kreiert. WARNUNG! 
-Wird in der URL verwendet. Wenn der Slug geändert wird, ändert sich auch die URL. "
+msgstr "Automatisch generiert. Bereinigen und es wird neu kreiert. WARNUNG! Wird in der URL verwendet. Wenn der Slug geändert wird, ändert sich auch die URL. "
 
 #: models.py:60
 msgid "Ordering"
