@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-17 10:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: cms_app.py:11 cms_toolbar.py:20 menu.py:14 models.py:214 models.py:215
+#: models.py:271 templates/aldryn_news/news_list.html:8
+msgid "News"
+msgstr ""
+
+#: cms_plugins.py:20
+msgid "Latest News Entries"
+msgstr ""
+
+#: cms_plugins.py:35
+msgid "Tags"
+msgstr ""
+
+#: cms_plugins.py:47
+msgid "Archive"
+msgstr ""
+
+#: cms_plugins.py:58
+msgid "News links"
+msgstr ""
+
+#: cms_toolbar.py:22
+msgid "Add News"
+msgstr ""
+
+#: cms_toolbar.py:27
+msgid "Edit News"
+msgstr ""
+
+#: feeds.py:19
+#, python-format
+msgid "News on %(site_name)s"
+msgstr ""
+
+#: forms.py:83
+msgid "the conflicting object"
+msgstr ""
+
+#: forms.py:84
+#, python-format
+msgid "Conflicting slug. See %(address)s."
+msgstr ""
+
+#: models.py:44
+#, python-format
+msgid "There is no page translation for the language: %(lang)s"
+msgstr ""
+
+#: models.py:53 models.py:89
+msgid "Name"
+msgstr ""
+
+#: models.py:54 models.py:90 models.py:195
+msgid "Slug"
+msgstr ""
+
+#: models.py:55 models.py:196
+msgid ""
+"Auto-generated. Clean it to have it re-created. WARNING! Used in the URL. If "
+"changed, the URL will change. "
+msgstr ""
+
+#: models.py:60
+msgid "Ordering"
+msgstr ""
+
+#: models.py:63 models.py:207
+msgid "Category"
+msgstr ""
+
+#: models.py:64
+msgid "Categories"
+msgstr ""
+
+#: models.py:131
+msgid "Tagged Item"
+msgstr ""
+
+#: models.py:132
+msgid "Tagged Items"
+msgstr ""
+
+#: models.py:194
+msgid "Title"
+msgstr ""
+
+#: models.py:198
+msgid "Lead-in"
+msgstr ""
+
+#: models.py:199
+msgid "Will be displayed in lists, and at the start of the detail page"
+msgstr ""
+
+#: models.py:202
+msgid "Key Visual"
+msgstr ""
+
+#: models.py:204
+msgid "Published Since"
+msgstr ""
+
+#: models.py:205
+msgid "Used in the URL. If changed, the URL will change."
+msgstr ""
+
+#: models.py:206
+msgid "Published Until"
+msgstr ""
+
+#: models.py:208
+msgid "WARNING! Used in the URL. If changed, the URL will change."
+msgstr ""
+
+#: models.py:246
+msgid "Full list"
+msgstr ""
+
+#: models.py:247
+msgid "Simple list"
+msgstr ""
+
+#: models.py:250
+msgid "The number of latests entries to be displayed."
+msgstr ""
+
+#: models.py:251
+msgid "Type of list"
+msgstr ""
+
+#: models.py:252
+msgid "Show only the news tagged with chosen tags."
+msgstr ""
+
+#: views.py:56
+#, python-format
+msgid "There is no page translation for the language: %(languages)s"
+msgstr ""
+
+#: templates/aldryn_news/news_list.html:7
+msgid "News Archive"
+msgstr ""
+
+#: templates/aldryn_news/includes/news_items.html:9
+msgid "read more"
+msgstr ""
+
+#: templates/aldryn_news/includes/news_items.html:12
+#: templates/aldryn_news/includes/simple_news_items.html:9
+msgid "No entry found."
+msgstr ""
+
+#: templates/aldryn_news/plugins/tags.html:8
+msgid "There are no news tags."
+msgstr ""
