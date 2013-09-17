@@ -155,7 +155,7 @@ msgstr "Nur Newseinträge mit gewählten Tag anzeigen."
 #: views.py:56
 #, python-format
 msgid "There is no page translation for the language: %(languages)s"
-msgstr "Keine Seitenübersetzung für die Sprache: %(lang)s"
+msgstr "Keine Seitenübersetzung für die Sprache: %(languages)s"
 
 #: templates/aldryn_news/news_list.html:7
 msgid "News Archive"
