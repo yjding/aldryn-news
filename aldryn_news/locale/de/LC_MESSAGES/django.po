@@ -25,151 +25,152 @@ msgstr ""
 
 #: cms_plugins.py:20
 msgid "Latest News Entries"
-msgstr ""
+msgstr "Aktuellste Newseinträge"
 
 #: cms_plugins.py:35
 msgid "Tags"
-msgstr ""
+msgstr "Tags"
 
 #: cms_plugins.py:47
 msgid "Archive"
-msgstr ""
+msgstr "Archiv"
 
 #: cms_plugins.py:58
 msgid "News links"
-msgstr ""
+msgstr "News Links"
 
 #: cms_toolbar.py:22
 msgid "Add News"
-msgstr ""
+msgstr "News hinzufügen"
 
 #: cms_toolbar.py:27
 msgid "Edit News"
-msgstr ""
+msgstr "News bearbeiten"
 
 #: feeds.py:19
 #, python-format
 msgid "News on %(site_name)s"
-msgstr ""
+msgstr "News auf %(site_name)s"
 
 #: forms.py:83
 msgid "the conflicting object"
-msgstr ""
+msgstr "das widersprüchliche Objekt"
 
 #: forms.py:84
 #, python-format
 msgid "Conflicting slug. See %(address)s."
-msgstr ""
+msgstr "Widersprüchlicher Slug. Siehe %(address)s."
 
 #: models.py:44
 #, python-format
 msgid "There is no page translation for the language: %(lang)s"
-msgstr ""
+msgstr "Keine Seitenübersetzung für die Sprache: %(lang)s"
 
 #: models.py:53 models.py:89
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: models.py:54 models.py:90 models.py:195
 msgid "Slug"
-msgstr ""
+msgstr "Slug"
 
 #: models.py:55 models.py:196
 msgid ""
 "Auto-generated. Clean it to have it re-created. WARNING! Used in the URL. If "
 "changed, the URL will change. "
-msgstr ""
+msgstr "Automatisch generiert. Bereinigen und es wird neu kreiert. WARNUNG! 
+Wird in der URL verwendet. Wenn der Slug geändert wird, ändert sich auch die URL. "
 
 #: models.py:60
 msgid "Ordering"
-msgstr ""
+msgstr "Reihenfolge"
 
 #: models.py:63 models.py:207
 msgid "Category"
-msgstr ""
+msgstr "Kategorie"
 
 #: models.py:64
 msgid "Categories"
-msgstr ""
+msgstr "Kategorien"
 
 #: models.py:131
 msgid "Tagged Item"
-msgstr ""
+msgstr "Getaggter Eintrag"
 
 #: models.py:132
 msgid "Tagged Items"
-msgstr ""
+msgstr "Getaggte Einträge"
 
 #: models.py:194
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: models.py:198
 msgid "Lead-in"
-msgstr ""
+msgstr "Anriss"
 
 #: models.py:199
 msgid "Will be displayed in lists, and at the start of the detail page"
-msgstr ""
+msgstr "Wird in Listen dargestellt und am Beginn der Detailseie"
 
 #: models.py:202
 msgid "Key Visual"
-msgstr ""
+msgstr "Hauptbild"
 
 #: models.py:204
 msgid "Published Since"
-msgstr ""
+msgstr "Veröffentlicht seit"
 
 #: models.py:205
 msgid "Used in the URL. If changed, the URL will change."
-msgstr ""
+msgstr "Wird in der URL verwendet. Wenn verändert, ändert sich auch die URL."
 
 #: models.py:206
 msgid "Published Until"
-msgstr ""
+msgstr "Veröffentlicht bis"
 
 #: models.py:208
 msgid "WARNING! Used in the URL. If changed, the URL will change."
-msgstr ""
+msgstr "WARNUNG! Wird in der URL verwendet. Wenn der Slug geändert wird, ändert sich auch die URL. "
 
 #: models.py:246
 msgid "Full list"
-msgstr ""
+msgstr "Komplette Liste"
 
 #: models.py:247
 msgid "Simple list"
-msgstr ""
+msgstr "Einfache Liste"
 
 #: models.py:250
 msgid "The number of latests entries to be displayed."
-msgstr ""
+msgstr "Die Anzahl aktuellster Einträge, die angezeigt wird."
 
 #: models.py:251
 msgid "Type of list"
-msgstr ""
+msgstr "Art der Liste"
 
 #: models.py:252
 msgid "Show only the news tagged with chosen tags."
-msgstr ""
+msgstr "Nur Newseinträge mit gewählten Tag anzeigen."
 
 #: views.py:56
 #, python-format
 msgid "There is no page translation for the language: %(languages)s"
-msgstr ""
+msgstr "Keine Seitenübersetzung für die Sprache: %(lang)s"
 
 #: templates/aldryn_news/news_list.html:7
 msgid "News Archive"
-msgstr ""
+msgstr "News Archiv"
 
 #: templates/aldryn_news/includes/news_items.html:9
 msgid "read more"
-msgstr ""
+msgstr "mehr"
 
 #: templates/aldryn_news/includes/news_items.html:12
 #: templates/aldryn_news/includes/simple_news_items.html:9
 msgid "No entry found."
-msgstr ""
+msgstr "Kein Eintrag gefunden."
 
 #: templates/aldryn_news/plugins/tags.html:8
 msgid "There are no news tags."
-msgstr ""
+msgstr "Keine News Tags."
