@@ -71,6 +71,11 @@ class TaggedListView(BaseNewsView, ListView):
         tagged_pks = list(tagged.values_list('pk', flat=True))
         return qs.filter(pk__in=tagged_pks)
 
+    def get_context_data(self, **kwargs):
+        kwargs['tagged_entries'] = (self.kwargs.get('tag')
+                                    if 'tag' in self.kwargs else None)
+        return super(TaggedListView, self).get_context_data(**kwargs)
+
 
 class CategoryListView(BaseNewsView, ListView):
 
