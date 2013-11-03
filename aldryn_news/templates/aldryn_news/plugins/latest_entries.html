@@ -1,5 +1,7 @@
 <div class="plugin-news">
-	{% with type=instance.type_list %}
-	{% include "aldryn_news/includes/news_items.html" with news=instance.get_news %}
-	{% endwith %}
+	<div class="news-latest-entries">
+		{% with type=instance.type_list %}
+		{% include "aldryn_news/includes/news_items.html" with news=instance.get_news %}
+		{% endwith %}
+	</div>
 </div>

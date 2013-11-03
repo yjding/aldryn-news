@@ -1,5 +1,7 @@
 <div class="plugin-news">
-	{% with type="SIMPLE" %}
-    {% include "aldryn_news/includes/news_items.html" with news=instance.get_news %}
-    {% endwith %}
+	<div class="news-selected-entries">
+		{% with type="simple" %}
+		{% include "aldryn_news/includes/news_items.html" with news=instance.get_news %}
+		{% endwith %}
+	</div>
 </div>
