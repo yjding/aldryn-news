@@ -1,7 +1,5 @@
 <div class="plugin-news">
-    {% if instance.type_list == SIMPLE %}
-	    {% include "aldryn_news/includes/simple_news_items.html" with news=instance.get_news %}
-    {% else %}
-	    {% include "aldryn_news/includes/news_items.html" with news=instance.get_news %}
-    {% endif %}
+	{% with type=instance.type_list %}
+	{% include "aldryn_news/includes/news_items.html" with news=instance.get_news %}
+	{% endwith %}
 </div>

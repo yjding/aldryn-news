@@ -1,12 +1,22 @@
 {% load i18n thumbnail %}
-
-<ul class="news-items">
+{% load url from future %}
+{{ type }}
+<ul class="news-items{% if type %} news-items-simple{% endif %}">
 	{% for news_item in news %}
 	<li>
-		{% if image and news_item.key_visual_id %}<p class="news-visual"><img src="{% thumbnail news_item.key_visual 200x100 crop %}" alt="" /></p>{% endif %}
+		{% if image and news_item.key_visual_id %}<p class="news-visual"><img src="{% thumbnail news_item.key_visual 100x100 crop upscale %}" alt="" /></p>{% endif %}
 		<h3><a href="{{ news_item.get_absolute_url }}">{{ news_item.title }}</a></h3>
-		<p class="news-date">{{ news_item.publication_start|date }}</p>
-		<p class="news-lead">{{ news_item.lead_in|safe|striptags|truncatewords:"25" }} <a href="{{ news_item.get_absolute_url }}">{% trans "read more" %}</a></p>
+		{% block blog_meta %}
+		<p class="news-meta">
+			<span class="news-date">{{ news_item.publication_start|date }}</span>
+			{# <span class="news-author">{% trans "by" %} <a href="{% url 'aldryn_blog:author-posts' post.author.username %}">{{ post.author|user_name }}</a></span> #}
+			{% if news_item.tags and false %}
+			<span class="news-tags">{% for tag in news_item.tags %}<a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+			{% endif %}
+		</p>
+		{% endblock %}
+		<p class="news-lead">{{ news_item.lead_in|safe }}</p>
+		<p class="news-more"><a href="{{ news_item.get_absolute_url }}">{% trans "read more" %}</a></p>
 	</li>
 	{% empty %}
 	<li><p class="news-empty">{% trans "No entry found." %}</p></li>

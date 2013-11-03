@@ -1,3 +1,5 @@
 <div class="plugin-news">
-    {% include "aldryn_news/includes/simple_news_items.html" with news=instance.get_news %}
+	{% with type="SIMPLE" %}
+    {% include "aldryn_news/includes/news_items.html" with news=instance.get_news %}
+    {% endwith %}
 </div>
