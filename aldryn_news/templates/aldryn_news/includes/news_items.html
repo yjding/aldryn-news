@@ -4,7 +4,7 @@
 <ul class="news-items{% if type %} news-items-simple{% endif %}">
 	{% for news_item in news %}
 	<li>
-		{% if image and news_item.key_visual_id %}<p class="news-visual"><img src="{% thumbnail news_item.key_visual 100x100 crop upscale %}" alt="" /></p>{% endif %}
+		{% if image and news_item.key_visual_id %}<p class="news-visual"><a href="{{ news_item.get_absolute_url }}"><img src="{% thumbnail news_item.key_visual 100x100 crop upscale %}" alt="" /></a></p>{% endif %}
 		<h3><a href="{{ news_item.get_absolute_url }}">{{ news_item.title }}</a></h3>
 		{% block blog_meta %}
 		<p class="news-meta">
