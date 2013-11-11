@@ -29,11 +29,13 @@ Add below apps to ``INSTALLED_APPS``: ::
         …
         'taggit',
         'aldryn_news',
+        'aldryn_search',
         'django_select2',
         'djangocms_text_ckeditor',
         'easy_thumbnails',
         'filer',
         'hvad',
+        'haystack', # for search
         …
     ]
 
@@ -53,3 +55,11 @@ Available Plug-ins
 ==================
 
 ``Latest News Entries`` plugin lets you list **n** most frequent news filtered by tags.
+
+
+Search
+==================
+
+By default, the news entries are searchable using ``django-haystack``.
+
+You can turn it this behavior off by setting ``ALDRYN_NEWS_SEARCH = False`` in your django settings.
