@@ -142,14 +142,17 @@ class RelatedManager(TranslationManager):
         qs = qs.order_by('-publication_start')
         return qs
 
-    def get_tags(self, language):
+    def get_tags(self, language, news_ids=None):
         """Returns tags used to tag news and its count. Results are ordered by count."""
 
         # get tagged news
-        news = self.language(language).distinct()
+
+        if not news_ids:
+            news_ids = self.language(language).values_list('pk', flat=True)
+
         kwargs = {
-            "object_id__in": [instance.pk for instance in news],
-            "content_type": ContentType.objects.get_for_model(news[0])
+            "object_id__in": set(news_ids),
+            "content_type": ContentType.objects.get_for_model(self.model)
         }
 
         # aggregate and sort
