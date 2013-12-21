@@ -6,15 +6,17 @@ from aldryn_news.models import News, Category, Tag, TaggedItem
 
 import cms
 from cms.admin.placeholderadmin import PlaceholderAdmin
+from cms.admin.placeholderadmin import FrontendEditableAdmin
 from distutils.version import LooseVersion
 from hvad.admin import TranslatableAdmin
 
 
-class NewsAdmin(TranslatableAdmin, PlaceholderAdmin):
+class NewsAdmin(FrontendEditableAdmin, TranslatableAdmin, PlaceholderAdmin):
 
     date_hierarchy = 'publication_start'
     list_display = ['__unicode__', 'publication_start', 'publication_end', 'all_translations']
     form = NewsForm
+    frontend_editable_fields = ("title", "lead_in")
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = [
