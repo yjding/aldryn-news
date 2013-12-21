@@ -1,11 +1,11 @@
 {% load i18n %}
 
-<div class="plugin-news">
+<div class="plugin plugin-news">
 	<ul class="news-tags">
 		{% for tag in tags %}
-		<li><a href="{% url 'tagged-news' tag=tag.slug %}" class="news-tag-1">{{ tag.name }} ({{ tag.count }})</a></li>
+		<li><a href="{% url 'tagged-news' tag=tag.slug %}" class="news-tag-1">{{ tag.name }} <span>({{ tag.count }})</span></a></li>
 		{% empty %}
-		<li>{% trans "There are no news tags." %}</li>
+		<li class="news-empty"><p>{% trans "No entry found." %}</p></li>
 		{% endfor %}
 	</ul>
 </div>

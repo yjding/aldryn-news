@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="plugin-news">
+<div class="plugin plugin-news">
 	{% regroup dates by date.year as years %}
 	{% with current_year=year current_month=month %}
 	<ul class="news-archive">
@@ -15,6 +15,8 @@
 				{% endfor %}
 			</ul>
 		</li>
+		{% empty %}
+		<li class="news-empty"><p>{% trans "No entry found." %}</p></li>
 		{% endfor %}
 	</ul>
 	{% endwith %}

@@ -1,11 +1,11 @@
-{% load i18n thumbnail %}
+{% load i18n cms_tags thumbnail %}
 {% load url from future %}
 
 <ul class="news-items{% if type %} news-items-simple{% endif %}">
 	{% for news_item in news %}
 	<li>
 		{% if image and news_item.key_visual_id %}<p class="news-visual"><a href="{{ news_item.get_absolute_url }}"><img src="{% thumbnail news_item.key_visual 100x100 crop upscale %}" alt="" /></a></p>{% endif %}
-		<h3><a href="{{ news_item.get_absolute_url }}">{{ news_item.title }}</a></h3>
+		<h3><a href="{{ news_item.get_absolute_url }}">{% show_editable_model news_item "title" %}</a></h3>
 		{% block blog_meta %}
 		<p class="news-meta">
 			<span class="news-date">{{ news_item.publication_start|date }}</span>
@@ -15,10 +15,10 @@
 			{% endif %}
 		</p>
 		{% endblock %}
-		<p class="news-lead">{{ news_item.lead_in|safe }}</p>
+		<p class="news-lead">{% show_editable_model news_item "lead_in" "lead_in" "" safe %}</p>
 		<p class="news-more"><a href="{{ news_item.get_absolute_url }}">{% trans "read more" %}</a></p>
 	</li>
 	{% empty %}
-	<li><p class="news-empty">{% trans "No entry found." %}</p></li>
+	<li class="news-empty"><p>{% trans "No entry found." %}</p></li>
 	{% endfor %}
 </ul>
