@@ -47,6 +47,8 @@ class AutoSlugForm(TranslatableModelForm):
             # add to self.data in order to show generated slug in the form in case of an error
             self.data[self.slug_field] = self.cleaned_data[self.slug_field] = slug
         else:
+            if self._errors.get(self.slug_field):
+                return self.cleaned_data
             slug = self.cleaned_data[self.slug_field]
 
         # validate uniqueness
