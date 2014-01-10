@@ -16,7 +16,7 @@ class NewsAdmin(FrontendEditableAdmin, TranslatableAdmin, PlaceholderAdmin):
     date_hierarchy = 'publication_start'
     list_display = ['__unicode__', 'publication_start', 'publication_end', 'all_translations']
     form = NewsForm
-    frontend_editable_fields = ("title", "lead_in")
+    frontend_editable_fields = ('title', 'lead_in')
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = [
