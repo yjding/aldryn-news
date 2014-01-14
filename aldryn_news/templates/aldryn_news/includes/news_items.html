@@ -15,7 +15,7 @@
 			{% endif %}
 		</p>
 		{% endblock %}
-		<p class="news-lead">{% show_editable_model news_item "lead_in" "lead_in" "" safe %}</p>
+		<div class="news-lead">{% show_editable_model news_item "lead_in" "lead_in" "" safe %}</div>
 		<p class="news-more"><a href="{{ news_item.get_absolute_url }}">{% trans "read more" %}</a></p>
 	</li>
 	{% empty %}
