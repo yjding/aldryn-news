@@ -26,7 +26,7 @@ from unidecode import unidecode
 def get_slug_in_language(record, language):
     if not record:
         return None
-    if language == record.language_code:  # possibly no need to hit db, try cache
+    if hasattr(record, record._meta.translations_cache) and language == record.language_code:  # possibly no need to hit db, try cache
         return record.lazy_translation_getter('slug')
     else:  # hit db
         try:
