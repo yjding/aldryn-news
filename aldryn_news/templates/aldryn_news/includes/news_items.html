@@ -5,7 +5,7 @@
 	{% for news_item in news %}
 	<li>
 		{% if image and news_item.key_visual_id %}<p class="news-visual"><a href="{{ news_item.get_absolute_url }}"><img src="{% thumbnail news_item.key_visual 100x100 crop upscale %}" alt="" /></a></p>{% endif %}
-		<h3><a href="{{ news_item.get_absolute_url }}">{% show_editable_model news_item "title" %}</a></h3>
+		<h3><a href="{{ news_item.get_absolute_url }}">{% render_model news_item "title" %}</a></h3>
 		{% block blog_meta %}
 		<p class="news-meta">
 			<span class="news-date">{{ news_item.publication_start|date }}</span>
@@ -15,7 +15,7 @@
 			{% endif %}
 		</p>
 		{% endblock %}
-		<div class="news-lead">{% show_editable_model news_item "lead_in" "lead_in" "" safe %}</div>
+		<div class="news-lead">{% render_model news_item "lead_in" "lead_in" "" safe %}</div>
 		<p class="news-more"><a href="{{ news_item.get_absolute_url }}">{% trans "read more" %}</a></p>
 	</li>
 	{% empty %}
