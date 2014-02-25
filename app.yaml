@@ -11,7 +11,7 @@ installed-apps:
   - easy_thumbnails
   - filer
   - taggit
-version: 0.0.9
+version: 0.1.1
 description: Publish news in django CMS
 license:
   name: BSD
