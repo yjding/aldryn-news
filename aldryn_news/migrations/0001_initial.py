@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ('taggit', '0001_initial.py'),
+    )
+
     def forwards(self, orm):
         # Adding model 'NewsTranslation'
         db.create_table('aldryn_news_news_translation', (
