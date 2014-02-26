@@ -6,12 +6,13 @@ author:
   url: https://www.divio.ch
 installed-apps:
   - aldryn_news
+  - hvad
   - djangocms_text_ckeditor
   - django_select2
   - easy_thumbnails
   - filer
   - taggit
-version: 0.1.1
+version: 0.1.2
 description: Publish news in django CMS
 license:
   name: BSD
