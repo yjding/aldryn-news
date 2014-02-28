@@ -42,6 +42,9 @@ class AutoSlugForm(TranslatableModelForm):
     def clean(self):
         super(AutoSlugForm, self).clean()
 
+        if not self.fields.get(self.slug_field):
+            return self.cleaned_data
+
         if not self.data.get(self.slug_field):
             slug = self.generate_slug()
             # add to self.data in order to show generated slug in the form in case of an error
