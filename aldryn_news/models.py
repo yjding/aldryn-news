@@ -7,10 +7,10 @@ from django.core.exceptions import ImproperlyConfigured
 
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, override
 from django.utils.timezone import now
 
-from cms.utils.i18n import force_language, get_current_language
+from cms.utils.i18n import get_current_language
 from cms.models.fields import PlaceholderField
 from cms.models.pluginmodel import CMSPlugin
 from djangocms_text_ckeditor.fields import HTMLField
@@ -70,9 +70,14 @@ class Category(TranslatableModel):
     def get_absolute_url(self, language=None):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
-        with force_language(language):
-            if not slug:  # category not translated in given language
-                return get_page_url('latest-news', language)
+        if not slug:
+            try:
+                with override(language, deactivate=True):
+                    return get_page_url('latest-news', language)
+            except ImproperlyConfigured:
+                return '/'
+
+        with override(language):
             kwargs = {'category_slug': slug}
             return reverse('news-category', kwargs=kwargs)
 
@@ -224,12 +229,16 @@ class News(TranslatableModel):
     def get_absolute_url(self, language=None):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
-        with force_language(language):
-            if not slug:  # news not translated in given language
-                if self.category:
-                    return self.category.get_absolute_url(language=language)
-                else:
+        if not slug:
+            try:
+                with override(language, deactivate=True):
+                    if self.category:
+                        return self.category.get_absolute_url(language=language)
                     return get_page_url('latest-news', language)
+            except ImproperlyConfigured:
+                return '/'
+
+        with override(language):
             kwargs = {'year': self.publication_start.year,
                       'month': self.publication_start.month,
                       'day': self.publication_start.day,
