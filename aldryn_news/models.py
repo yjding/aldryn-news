@@ -71,7 +71,7 @@ class Category(TranslatableModel):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
         with override(language):
-            if not slug:
+            if not slug:  # category not translated in given language
                 try:
                     return get_page_url('latest-news', language)
                 except ImproperlyConfigured:
@@ -229,7 +229,7 @@ class News(TranslatableModel):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
         with override(language):
-            if not slug:
+            if not slug:   # news not translated in given language
                 if self.category:
                     return self.category.get_absolute_url(language=language)
 
