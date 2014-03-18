@@ -70,14 +70,13 @@ class Category(TranslatableModel):
     def get_absolute_url(self, language=None):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
-        if not slug:
-            try:
-                with override(language, deactivate=True):
-                    return get_page_url('latest-news', language)
-            except ImproperlyConfigured:
-                return '/'
-
         with override(language):
+            if not slug:
+                try:
+                    return get_page_url('latest-news', language)
+                except ImproperlyConfigured:
+                    return '/'
+
             kwargs = {'category_slug': slug}
             return reverse('news-category', kwargs=kwargs)
 
@@ -229,23 +228,27 @@ class News(TranslatableModel):
     def get_absolute_url(self, language=None):
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
-        if not slug:
-            try:
-                with override(language, deactivate=True):
-                    if self.category:
-                        return self.category.get_absolute_url(language=language)
-                    return get_page_url('latest-news', language)
-            except ImproperlyConfigured:
-                return '/'
-
         with override(language):
-            kwargs = {'year': self.publication_start.year,
-                      'month': self.publication_start.month,
-                      'day': self.publication_start.day,
-                      'slug': slug}
+            if not slug:
+                if self.category:
+                    return self.category.get_absolute_url(language=language)
+
+                try:
+                    return get_page_url('latest-news', language)
+                except ImproperlyConfigured:
+                    return '/'
+
+            kwargs = {
+                'year': self.publication_start.year,
+                'month': self.publication_start.month,
+                'day': self.publication_start.day,
+                'slug': slug
+            }
+
             category_slug = get_slug_in_language(self.category, language)
             if category_slug:
                 kwargs['category_slug'] = category_slug
+
             return reverse('news-detail', kwargs=kwargs)
 
 
