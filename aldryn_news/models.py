@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
-from collections import Counter
-from django.contrib.contenttypes.models import ContentType
-from django.template.defaultfilters import slugify
-from django.core.exceptions import ImproperlyConfigured
 
+from django.template.defaultfilters import slugify
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, override
@@ -18,9 +17,16 @@ from filer.fields.image import FilerImageField
 from taggit.models import (GenericTaggedItemBase as TaggitGenericTaggedItemBase,
                            ItemBase as TaggitItemBase)
 from taggit.managers import TaggableManager
-from hvad.models import TranslatableModel, TranslatedFields, TranslationManager
+from hvad.models import TranslatableModel, TranslatedFields
 from hvad.utils import get_translation
 from unidecode import unidecode
+
+from .managers import (
+    CategoryManager,
+    RelatedManager,
+    PublishedManager,
+    TagManager,
+)
 
 
 def get_slug_in_language(record, language):
@@ -59,6 +65,8 @@ class Category(TranslatableModel):
 
     ordering = models.IntegerField(_('Ordering'), default=0)
 
+    objects = CategoryManager()
+
     class Meta:
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
@@ -79,12 +87,6 @@ class Category(TranslatableModel):
 
             kwargs = {'category_slug': slug}
             return reverse('news-category', kwargs=kwargs)
-
-
-class TagManager(TranslationManager):
-
-    def get_query_set(self):
-        return self.language()
 
 
 class Tag(TranslatableModel):
@@ -136,66 +138,8 @@ class TaggedItem(TaggitGenericTaggedItemBase, TaggedItemBase):
         verbose_name_plural = _("Tagged Items")
 
 
-class RelatedManager(TranslationManager):
-
-    def using_translations(self):
-        # not overriding get_queryset, as hvad doesn't use that
-        qs = super(RelatedManager, self).using_translations()
-        qs = qs.select_related('key_visual')
-        # bug in hvad - Meta ordering isn't preserved
-        qs = qs.order_by('-publication_start')
-        return qs
-
-    def get_tags(self, language, news_ids=None):
-        """Returns tags used to tag news and its count. Results are ordered by count."""
-
-        # get tagged news
-
-        if not news_ids:
-            news_ids = self.language(language).values_list('pk', flat=True)
-
-        kwargs = {
-            "object_id__in": set(news_ids),
-            "content_type": ContentType.objects.get_for_model(self.model)
-        }
-
-        # aggregate and sort
-        counted_tags = dict(TaggedItem.objects
-                                      .filter(**kwargs)
-                                      .values('tag')
-                                      .annotate(count=models.Count('tag'))
-                                      .values_list('tag', 'count'))
-
-        # and finally get the results
-        tags = Tag.objects.filter(pk__in=counted_tags.keys())
-        for tag in tags:
-            tag.count = counted_tags[tag.pk]
-        return sorted(tags, key=lambda x: -x.count)
-
-    def get_months(self, language):
-        """Get months with aggregatet count (how much news is in the month). Results are ordered by date."""
-        # done via naive way as django's having tough time while aggregating on date fields
-        news = self.language(language)
-        dates = news.values_list('publication_start', flat=True)
-        dates = [(x.year, x.month) for x in dates]
-        date_counter = Counter(dates)
-        dates = set(dates)
-        dates = sorted(dates, reverse=True)
-        return [{'date': datetime.date(year=year, month=month, day=1),
-                 'count': date_counter[year, month]} for year, month in dates]
-
-
-class PublishedManager(RelatedManager):
-
-    def using_translations(self):
-        # not overriding get_queryset, as hvad doesn't use that
-        qs = super(PublishedManager, self).using_translations()
-        qs = qs.filter(publication_start__lte=now())
-        qs = qs.filter(models.Q(publication_end__isnull=True) | models.Q(publication_end__gte=now()))
-        return qs
-
-
 class News(TranslatableModel):
+    THUMBNAIL_SIZE = getattr(settings, 'ALDRYN_NEWS_ITEM_THUMBNAIL_SIZE', '100x100')
 
     translations = TranslatedFields(
         title=models.CharField(_('Title'), max_length=255),

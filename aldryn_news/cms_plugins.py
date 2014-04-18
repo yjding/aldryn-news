@@ -41,6 +41,18 @@ class TagsPlugin(NewsPluginBase):
 
 
 @plugin_pool.register_plugin
+class CategoriesPlugin(NewsPluginBase):
+
+    render_template = 'aldryn_news/plugins/categories.html'
+    name = _('Categories')
+
+    def render(self, context, instance, placeholder):
+        get_categories = models.Category.objects.get_with_usage_count
+        context['categories'] = get_categories(language=instance.language, news__isnull=False)
+        return context
+
+
+@plugin_pool.register_plugin
 class ArchivePlugin(NewsPluginBase):
 
     render_template = 'aldryn_news/plugins/archive.html'
