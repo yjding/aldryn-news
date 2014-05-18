@@ -12,7 +12,8 @@ installed-apps:
   - easy_thumbnails
   - filer
   - taggit
-version: 0.1.7
+  - aldryn-search
+version: 0.1.8
 description: Publish news in django CMS
 license:
   name: BSD
