@@ -5,6 +5,7 @@ from django.views.generic.dates import ArchiveIndexView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 from aldryn_news import request_news_identifier
 from aldryn_news.models import News, Category, Tag
@@ -91,6 +92,8 @@ class NewsDetailView(BaseNewsView, DetailView):
         # https://github.com/KristianOellegaard/django-hvad/issues/119
         qs = self.get_queryset()
         qs = qs.filter(slug=self.kwargs['slug'])
+        if not qs.exists():
+            raise Http404
         news = qs[0]
         setattr(self.request, request_news_identifier, news)
         return news
