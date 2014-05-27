@@ -1,0 +1,25 @@
+{
+  "name": "News",
+  "description": "Publish news in django CMS",
+  "version": "0.1.9",
+  "url": "https://github.com/aldryn/aldryn-news",
+  "package-name": "aldryn-news",
+  "installed-apps": [
+    "aldryn_news",
+    "hvad",
+    "djangocms_text_ckeditor",
+    "django_select2",
+    "easy_thumbnails",
+    "filer",
+    "taggit"
+    "aldryn_search"
+  ],
+  "author": {
+    "name": "Divio AG",
+    "url": "https://www.divio.ch"
+  },
+  "license": {
+    "name": "BSD",
+    "text": "!literal-include LICENSE.txt"
+  }
+}
