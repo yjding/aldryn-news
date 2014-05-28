@@ -1,7 +1,7 @@
 {
   "name": "News",
   "description": "Publish news in django CMS",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "url": "https://github.com/aldryn/aldryn-news",
   "package-name": "aldryn-news",
   "installed-apps": [
