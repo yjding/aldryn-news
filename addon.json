@@ -11,7 +11,7 @@
     "django_select2",
     "easy_thumbnails",
     "filer",
-    "taggit",
+    "taggit"
   ],
   "author": {
     "name": "Divio AG",
