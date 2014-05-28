@@ -60,6 +60,7 @@ Available Plug-ins
 Search
 ==================
 
-By default, the news entries are searchable using ``django-haystack``.
+If you want the news entries to be searchable, be sure to install ``aldryn-search`` and its dependencies.
+Your entries will be searchable using ``django-haystack``.
 
 You can turn it this behavior off by setting ``ALDRYN_NEWS_SEARCH = False`` in your django settings.
