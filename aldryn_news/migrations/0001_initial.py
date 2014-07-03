@@ -9,6 +9,8 @@ class Migration(SchemaMigration):
 
     depends_on = (
         ('taggit', '0001_initial.py'),
+        ('filer', '0001_initial.py'),
+        ('cms', '0001_initial.py'),
     )
 
     def forwards(self, orm):
