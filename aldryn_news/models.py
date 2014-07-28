@@ -206,7 +206,7 @@ class LatestNewsPlugin(CMSPlugin):
         (SIMPLE, _("Simple list")),
     )
 
-    latest_entries = models.IntegerField(default=5, help_text=_('The number of latests entries to be displayed.'))
+    latest_entries = models.PositiveSmallIntegerField(default=5, help_text=_('The number of latests entries to be displayed.'))
     type_list = models.CharField(verbose_name=_("Type of list"), choices=TYPES, default=FULL, max_length=255)
     tags = models.ManyToManyField('taggit.Tag', blank=True, help_text=_('Show only the news tagged with chosen tags.'))
 
