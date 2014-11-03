@@ -13,7 +13,6 @@ from hvad.admin import TranslatableAdmin
 
 class NewsAdmin(FrontendEditableAdmin, TranslatableAdmin, PlaceholderAdmin):
 
-    date_hierarchy = 'publication_start'
     list_display = ['__unicode__', 'publication_start', 'publication_end', 'all_translations']
     form = NewsForm
     frontend_editable_fields = ('title', 'lead_in')
