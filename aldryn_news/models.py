@@ -86,7 +86,7 @@ class Category(TranslatableModel):
                     return '/'
 
             kwargs = {'category_slug': slug}
-            return reverse('news-category', kwargs=kwargs)
+            return reverse('aldryn_news:news-category', kwargs=kwargs)
 
 
 class Tag(TranslatableModel):
@@ -193,7 +193,7 @@ class News(TranslatableModel):
             if category_slug:
                 kwargs['category_slug'] = category_slug
 
-            return reverse('news-detail', kwargs=kwargs)
+            return reverse('aldryn_news:news-detail', kwargs=kwargs)
 
 
 class LatestNewsPlugin(CMSPlugin):
