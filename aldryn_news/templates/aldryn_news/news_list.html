@@ -10,7 +10,7 @@
 		{% trans "News" %}{% endif %}</h2>{% endblock %}
 	{% include "aldryn_news/includes/news_items.html" with news=object_list image="true" %}
 	{% if author or archive_date or tagged_entries %}
-	<p class="news-back"><a href="{% url 'latest-news' %}">{% trans "Back" %}</a></p>
+	<p class="news-back"><a href="{% url 'aldryn_news:latest-news' %}">{% trans "Back" %}</a></p>
 	{% endif %}
 {{ tagged_pks }}
 </div>
