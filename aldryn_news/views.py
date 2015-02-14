@@ -30,6 +30,7 @@ class ArchiveView(BaseNewsView, ArchiveIndexView):
     allow_future = True
     template_name = 'aldryn_news/news_list.html'
     date_list_period = 'month'
+    model = News
 
 
     def get_queryset(self):
