@@ -157,6 +157,7 @@ class News(TranslatableModel):
     publication_end = models.DateTimeField(_('Published Until'), null=True, blank=True)
     category = models.ForeignKey(Category, verbose_name=_('Category'), blank=True, null=True,
                                  help_text=_('WARNING! Used in the URL. If changed, the URL will change.'))
+    external_url = models.URLField(max_length=1000, null=True, blank=True)
     objects = RelatedManager()
     published = PublishedManager()
     tags = TaggableManager(blank=True, through=TaggedItem)
@@ -170,6 +171,8 @@ class News(TranslatableModel):
         return self.lazy_translation_getter('title', str(self.pk))
 
     def get_absolute_url(self, language=None):
+        if self.external_url:
+            return self.external_url
         language = language or get_current_language()
         slug = get_slug_in_language(self, language)
         with override(language):
